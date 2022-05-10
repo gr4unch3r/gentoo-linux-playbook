@@ -1,0 +1,44 @@
+---
+- name: Setting root password
+  ansible.builtin.shell:
+    cmd: "{{ chroot_cmd }} '. /etc/profile; echo 'root:{{ root_password }}' | chpasswd'"
+  no_log: true
+
+- name: Adding nonroot user
+  ansible.builtin.shell:
+    cmd: "{{ chroot_cmd }} '. /etc/profile; useradd {{ nonroot_user }}'"
+
+- name: Adding nonroot user to groups
+  ansible.builtin.shell:
+    cmd: "{{ chroot_cmd }} '. /etc/profile; gpasswd -a {{ nonroot_user }} {{ item }}'"
+  with_items:
+    - users
+    - wheel
+    - audio
+
+- name: Setting nonroot user password
+  ansible.builtin.shell:
+    cmd: "{{ chroot_cmd }} '. /etc/profile; echo '{{ nonroot_user }}:{{ nonroot_password }}' | chpasswd'"
+  no_log: true
+
+- name: Emerging sudo
+  ansible.builtin.shell:
+    cmd: "{{ chroot_cmd }} '. /etc/profile; emerge app-admin/sudo'"
+
+- name: Adding sudoers exception for nonroot user
+  ansible.builtin.lineinfile:
+    path: "{{ chroot_mnt }}etc/sudoers.d/user-account"
+    line: "{{ nonroot_user }} ALL=(ALL) ALL"
+    create: true
+
+- name: Setting keyboard layout
+  ansible.builtin.lineinfile:
+    path: "{{ chroot_mnt }}etc/conf.d/keymaps"
+    regexp: '^keymap='
+    line: keymap="{{ sys_keyboard }}"
+
+- name: Setting hwclock to UTC
+  ansible.builtin.lineinfile:
+    path: "{{ chroot_mnt }}etc/conf.d/hwclock"
+    regexp: '^clock='
+    line: clock="UTC"

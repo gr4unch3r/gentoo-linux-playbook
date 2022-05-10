@@ -1,0 +1,96 @@
+---
+- name: Installing ebuild repo snapshot
+  ansible.builtin.shell:
+    cmd: "{{ chroot_cmd }} '. /etc/profile; emerge-webrsync'"
+
+- name: Updating ebuild repo
+  ansible.builtin.shell:
+    cmd: "{{ chroot_cmd }} '. /etc/profile; emerge --sync'"
+
+- name: Setting profile
+  ansible.builtin.shell:
+    cmd: "{{ chroot_cmd }} '. /etc/profile; eselect profile set {{ portage_profile }}'"
+
+- name: Updating the @world set
+  ansible.builtin.shell:
+    cmd: "{{ chroot_cmd }} '. /etc/profile; emerge -uDNq @world'"
+
+- name: Emerging gentoolkit
+  ansible.builtin.shell:
+    cmd: "{{ chroot_cmd }} '. /etc/profile; emerge -1 app-portage/gentoolkit'"
+
+- name: Disabling 'bindist' global USE flag
+  ansible.builtin.shell:
+    cmd: "{{ chroot_cmd }} '. /etc/profile; euse -D bindist'"
+
+- name: Emerging cpuid2cpuflags
+  ansible.builtin.shell:
+    cmd: "{{ chroot_cmd }} '. /etc/profile; emerge -1 app-portage/cpuid2cpuflags'"
+
+- name: Getting Portage CPU_FLAGS_X86
+  ansible.builtin.shell:
+    cmd: "{{ chroot_cmd }} '. /etc/profile; cpuid2cpuflags'"
+  register: cpu_flags
+
+- name: Setting Portage CPU_FLAGS_X86
+  ansible.builtin.lineinfile:
+    path: "{{ chroot_mnt }}etc/portage/package.use/00cpu-flags"
+    line: "*/* {{ cpu_flags.stderr }}"
+    create: true
+
+- name: Configuring ACCEPT_LICENSE variable
+  ansible.builtin.lineinfile:
+    path: "{{ make_conf }}"
+    line: ACCEPT_LICENSE="-* @FREE"
+    insertafter: EOF
+
+- name: Creating package license directory
+  ansible.builtin.file:
+    path: "{{ chroot_mnt }}etc/portage/package.license"
+    state: directory
+
+- name: Setting per-package license override for firmware
+  ansible.builtin.lineinfile:
+    path: "{{ chroot_mnt }}etc/portage/package.license/kernel"
+    line: sys-kernel/linux-firmware @BINARY-REDISTRIBUTABLE
+    create: true
+
+- name: Detecting CPU vendor
+  ansible.builtin.shell:
+    cmd: uname -i
+  register: vendor_id
+
+- name: Setting per-package license override if Intel CPU
+  ansible.builtin.lineinfile:
+    path: "{{ chroot_mnt }}etc/portage/package.license/kernel"
+    line: sys-firmware/intel-microcode intel-ucode
+    insertafter: EOF
+  when: "'GenuineIntel' in vendor_id.stdout"
+
+- name: Setting timezone
+  ansible.builtin.lineinfile:
+    path: "{{ chroot_mnt }}etc/timezone"
+    line: "{{ sys_timezone }}"
+    create: true
+
+- name: Reconfiguring sys-libs/timezone-data
+  ansible.builtin.shell:
+    cmd: "{{ chroot_cmd }} '. /etc/profile; emerge --config sys-libs/timezone-data'"
+
+- name: Setting locales
+  ansible.builtin.template:
+    src: templates/locale.gen
+    dest: "{{ chroot_mnt }}etc/locale.gen"
+
+- name: Generating locales
+  ansible.builtin.shell:
+    cmd: "{{ chroot_cmd }} '. /etc/profile; locale-gen'"
+
+- name: Setting language
+  ansible.builtin.template:
+    src: templates/02locale
+    dest: "{{ chroot_mnt }}etc/env.d/02locale"
+
+- name: Updating environment
+  ansible.builtin.shell:
+    cmd: "{{ chroot_cmd }} '. /etc/profile; env-update'"

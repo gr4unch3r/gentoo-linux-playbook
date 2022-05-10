@@ -1,0 +1,52 @@
+---
+- name: Setting 'initramfs' USE flag if AMD CPU
+  ansible.builtin.lineinfile:
+    path: "{{ chroot_mnt }}etc/portage/package.use/linux-firmware"
+    line: sys-kernel/linux-firmware initramfs
+    create: true
+  when: "'AuthenticAMD' in vendor_id.stdout"
+
+- name: Emerging linux-firmware
+  ansible.builtin.shell:
+    cmd: "{{ chroot_cmd }} '. /etc/profile; emerge sys-kernel/linux-firmware'"
+
+- name: Setting 'initramfs' USE flag if Intel CPU
+  ansible.builtin.lineinfile:
+    path: "{{ chroot_mnt }}etc/portage/package.use/intel-microcode"
+    line: sys-firmware/intel-microcode initramfs
+    create: true
+  when: "'GenuineIntel' in vendor_id.stdout"
+
+- name: Emerging intel-microcode if Intel CPU
+  ansible.builtin.shell:
+    cmd: "{{ chroot_cmd }} '. /etc/profile; emerge sys-firmware/intel-microcode'"
+  when: "'GenuineIntel' in vendor_id.stdout"
+
+- name: Enabling 'grub' USE flag for installkernel-gentoo
+  ansible.builtin.lineinfile:
+    path: "{{ chroot_mnt }}etc/portage/package.use/installkernel-gentoo"
+    line: sys-kernel/installkernel-gentoo grub
+    create: true
+
+- name: Emerging installkernel-gentoo
+  ansible.builtin.shell:
+    cmd: "{{ chroot_cmd }} '. /etc/profile; emerge sys-kernel/installkernel-gentoo'"
+
+- name: Enabling the 'initramfs' USE flag for gentoo-kernel
+  ansible.builtin.lineinfile:
+    path: "{{ chroot_mnt }}etc/portage/package.use/gentoo-kernel"
+    line: sys-kernel/gentoo-kernel initramfs
+    create: true
+
+- name: Emerging Gentoo Distribution Kernel
+  ansible.builtin.shell:
+    cmd: "{{ chroot_cmd }} '. /etc/profile; emerge sys-kernel/gentoo-kernel'"
+
+- name: Enabling the 'dist-kernel' global USE flag
+  ansible.builtin.shell:
+    cmd: "{{ chroot_cmd }} '. /etc/profile; euse -E dist-kernel'"
+
+- name: Creating modules-load.d directory
+  ansible.builtin.file:
+    path: "{{ chroot_mnt }}etc/modules-load.d"
+    state: directory

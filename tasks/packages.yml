@@ -1,0 +1,10 @@
+---
+- name: Emerging base packages
+  ansible.builtin.shell:
+    cmd: "{{ chroot_cmd }} '. /etc/profile; emerge {{ item }}'"
+  with_items: "{{ base_packages }}"
+
+- name: Enabling services
+  ansible.builtin.shell:
+    cmd: "{{ chroot_cmd }} '. /etc/profile; rc-update add {{ item }} default'"
+  with_items: "{{ rc_services }}"

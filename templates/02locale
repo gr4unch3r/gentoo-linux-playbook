@@ -1,0 +1,2 @@
+LANG="{{ sys_locale }}.UTF-8"
+LC_COLLATE="C.UTF-8"

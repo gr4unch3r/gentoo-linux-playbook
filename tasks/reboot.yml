@@ -1,0 +1,26 @@
+---
+- name: Cleaning up Stage 3 tarball
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+    - "{{ chroot_mnt }}{{ stage_tarball }}"
+    - "{{ chroot_mnt }}{{ stage_tarball }}.asc"
+
+- name: Unmounting filesystems
+  ansible.posix.mount:
+    path: "{{ chroot_mnt }}{{ item }}"
+    state: unmounted
+    chdir: /root
+  ignore_errors: true
+  with_items:
+    - proc
+    - sys
+    - dev/pts
+    - dev/shm
+    - dev
+    - boot
+    - '*'
+
+- name: Rebooting system
+  ansible.builtin.reboot:

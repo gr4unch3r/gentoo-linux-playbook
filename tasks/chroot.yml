@@ -1,0 +1,75 @@
+---
+- name: Selecting fastest mirror
+  ansible.builtin.shell:
+    cmd: mirrorselect -s1 -b10 -D -o >> {{ make_conf }}
+
+- name: Creating Gentoo ebuild repo
+  ansible.builtin.file:
+    path: "{{ chroot_mnt }}etc/portage/repos.conf"
+    state: directory
+
+- name: Copying Gentoo repo config
+  ansible.builtin.copy:
+    remote_src: true
+    src: "{{ chroot_mnt }}usr/share/portage/config/repos.conf"
+    dest: "{{ chroot_mnt }}etc/portage/repos.conf/gentoo.conf"
+
+- name: Copying DNS info
+  ansible.builtin.copy:
+    remote_src: true
+    follow: true
+    src: /etc/resolv.conf
+    dest: "{{ chroot_mnt }}etc/resolv.conf"
+
+- name: Mounting /proc
+  ansible.posix.mount:
+    path: "{{ chroot_mnt }}proc"
+    src: /proc
+    fstype: proc
+    state: mounted
+
+- name: Mounting /sys
+  ansible.posix.mount:
+    path: "{{ chroot_mnt }}sys"
+    src: /sys
+    opts: rbind,rslave
+    fstype: sysfs
+    state: mounted
+
+- name: Mounting /dev
+  ansible.posix.mount:
+    path: "{{ chroot_mnt }}dev"
+    src: /dev
+    opts: rbind,rslave
+    fstype: devtmpfs
+    state: mounted
+
+- name: Mounting /run
+  ansible.posix.mount:
+    path: "{{ chroot_mnt }}run"
+    src: /run
+    opts: bind,slave
+    fstype: tmpfs
+    state: mounted
+
+- name: Mounting boot partition if UEFI
+  ansible.posix.mount:
+    path: "{{ chroot_mnt }}boot"
+    src: "{{ sys_device }}1"
+    fstype: vfat
+    opts: noatime
+    state: mounted
+    dump: 0
+    passno: 2
+  when: efivars_contents.stdout != ""
+
+- name: Mounting boot partition if BIOS
+  ansible.posix.mount:
+    path: "{{ chroot_mnt }}boot"
+    src: "{{ sys_device }}1"
+    fstype: ext4
+    opts: noatime
+    state: mounted
+    dump: 0
+    passno: 2
+  when: efivars_contents.stdout == ""

@@ -1,0 +1,44 @@
+---
+- hosts: livecd
+
+  vars_files:
+    - default.config.yml
+
+  pre_tasks:
+    - name: Include default overrides
+      include_vars: config.yml
+
+  tasks:
+
+    - name: Partition the disk
+      import_tasks: tasks/partition.yml
+
+    - name: Install Stage 3 tarball
+      import_tasks: tasks/stage3.yml
+
+    - name: Prepare chroot environment
+      import_tasks: tasks/chroot.yml
+
+    - name: Configure Portage
+      import_tasks: tasks/portage.yml
+
+    - name: Install kernel
+      import_tasks: tasks/kernel.yml
+
+    - name: Generate fstab
+      import_tasks: tasks/fstab.yml
+
+    - name: Configure networking
+      import_tasks: tasks/network.yml
+
+    - name: Configure system info
+      import_tasks: tasks/sysinfo.yml
+
+    - name: Install packages
+      import_tasks: tasks/packages.yml
+
+    - name: Install Grub
+      import_tasks: tasks/grub.yml
+
+    - name: Reboot system
+      import_tasks: tasks/reboot.yml

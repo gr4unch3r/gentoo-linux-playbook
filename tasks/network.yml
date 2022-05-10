@@ -1,0 +1,19 @@
+---
+- name: Setting hostname
+  ansible.builtin.lineinfile:
+    path: "{{ chroot_mnt }}etc/conf.d/hostname"
+    regexp: '^hostname='
+    line: hostname="{{ sys_hostname }}"
+
+- name: Setting hostname in hosts file
+  ansible.builtin.template:
+    src: templates/hosts
+    dest: "{{ chroot_mnt }}etc/hosts"
+
+- name: Emerging dhcpcd
+  ansible.builtin.shell:
+    cmd: "{{ chroot_cmd }} '. /etc/profile; emerge net-misc/dhcpcd'"
+
+- name: Enabling dhcpcd
+  ansible.builtin.shell:
+    cmd: "{{ chroot_cmd }} '. /etc/profile; rc-update add dhcpcd default'"

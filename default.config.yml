@@ -1,0 +1,48 @@
+---
+# user:password configuration
+root_password: "L4rry_Th3_C0w"
+nonroot_user: "user"
+nonroot_password: "L4rry_Th3_C0w"
+
+# Ansible configuration
+ansible_password: "{{ root_password }}"
+
+# System info
+sys_device: "/dev/sda"
+sys_hostname: "host"
+sys_timezone: "UTC"
+sys_keyboard: "us"
+sys_locale: "en_US"
+
+# Stage 3 configuration
+gentoo_mirror: "https://distfiles.gentoo.org/releases/amd64/autobuilds/"
+gentoo_stage: "latest-stage3-amd64-openrc.txt"
+key_server: "hkps://keys.gentoo.org"
+signing_key: "13EBBDBEDE7A12775DFDB1BABB572E0E2D182910"
+key_fingerprint: "13EB BDBE DE7A 1277 5DFD  B1BA BB57 2E0E 2D18 2910"
+
+# chroot configuration
+chroot_mnt: "/mnt/gentoo/"
+chroot_cmd: "chroot /mnt/gentoo sh -c"
+
+# Portage configuration
+portage_profile: "default/linux/amd64/17.1"
+make_conf: "{{ chroot_mnt }}/etc/portage/make.conf"
+
+# Installed packages
+base_packages:
+  - app-admin/sysklogd
+  - sys-process/cronie
+  - sys-apps/mlocate
+  - net-misc/chrony
+  - sys-fs/e2fsprogs
+  - sys-fs/dosfstools
+  - net-wireless/iw
+  - net-wireless/wpa_supplicant
+
+# Enabled services
+rc_services:
+  - sysklogd
+  - cronie
+  - chronyd
+  - sshd

@@ -1,0 +1,2 @@
+{{ sys_locale }} ISO-8859-1
+{{ sys_locale }}.UTF-8 UTF-8
