@@ -13,11 +13,10 @@ You can override any of the defaults configured in ```default.config.yml``` by c
 
 ## Getting Started
 
-Boot Gentoo install media on target machine and:
+Boot Gentoo install media on target machine with the following boot options:
 
 ```
-$ rc-service sshd start
-$ passwd root
+gentoo dosshd passwd=foo
 ```
 
 Then on Ansible controller:

@@ -20,7 +20,9 @@
     - dev/shm
     - dev
     - boot
-    - '*'
+    - ''
+  loop_control:
+    label: "{{ chroot_mnt }}{{ item }}"
 
-- name: Rebooting system
+- name: Rebooting into new system
   ansible.builtin.reboot:

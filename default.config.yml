@@ -1,11 +1,8 @@
 ---
 # user:password configuration
-root_password: "L4rry_Th3_C0w"
+root_password: "foo"
 nonroot_user: "user"
-nonroot_password: "L4rry_Th3_C0w"
-
-# Ansible configuration
-ansible_password: "{{ root_password }}"
+nonroot_password: "foo"
 
 # System info
 sys_device: "/dev/sda"

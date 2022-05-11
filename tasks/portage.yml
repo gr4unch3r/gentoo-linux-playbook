@@ -35,7 +35,7 @@
 - name: Setting Portage CPU_FLAGS_X86
   ansible.builtin.lineinfile:
     path: "{{ chroot_mnt }}etc/portage/package.use/00cpu-flags"
-    line: "*/* {{ cpu_flags.stderr }}"
+    line: "*/* {{ cpu_flags.stdout }}"
     create: true
 
 - name: Configuring ACCEPT_LICENSE variable
