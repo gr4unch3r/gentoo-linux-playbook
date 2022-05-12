@@ -25,5 +25,5 @@ jobs:
       - name: prevent MacOS crash
         run: export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
 
-      - name: test role
+      - name: test playbook
         run: packer build packer.pkr.hcl
