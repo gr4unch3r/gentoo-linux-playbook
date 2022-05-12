@@ -30,7 +30,7 @@ $ make && make install
 
 ## License
 
-![GitHub](https://img.shields.io/github/license/gr4unch3r/gentoo-linux-playbook)
+MIT
 
 ## Author Information
 
