@@ -26,7 +26,7 @@
   community.general.filesystem:
     fstype: vfat
     dev: "{{ sys_device }}1"
-    opts: -F 32 -cc
+    opts: -F 32
   when: efivars_contents.stdout != ""
 
 - name: Creating boot partition if BIOS
@@ -47,7 +47,6 @@
   community.general.filesystem:
     fstype: ext4
     dev: "{{ sys_device }}1"
-    opts: -cc
   when: efivars_contents.stdout == ""
 
 - name: Creating swap partition if UEFI
@@ -82,7 +81,6 @@
   community.general.filesystem:
     fstype: swap
     dev: "{{ sys_device }}2"
-    opts: -cc
 
 - name: Activating swap
   ansible.builtin.shell:
@@ -118,7 +116,6 @@
   community.general.filesystem:
     fstype: ext4
     dev: "{{ sys_device }}3"
-    opts: -cc
 
 - name: Creating / mountpoint
   ansible.builtin.file:

@@ -1,0 +1,29 @@
+---
+name: packer-test
+
+on: push
+
+jobs:
+  test:
+    runs-on: macos-10.15
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+
+      - name: upgrade python
+        run: brew update && brew install python@3.10
+
+      - name: upgrade pip
+        run: python3 -m pip install --upgrade pip
+
+      - name: create virtualenv
+        run: python3 -m pip install virtualenv && python3 -m virtualenv --python=python3 venv && source ./venv/bin/activate
+
+      - name: install requirements
+        run: python3 -m pip install -r ansible
+
+      - name: prevent MacOS crash
+        run: export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
+
+      - name: test role
+        run: packer build packer.pkr.hcl
