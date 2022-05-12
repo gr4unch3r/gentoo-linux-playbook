@@ -24,7 +24,7 @@ build {
   provisioner "ansible" {
     galaxy_file   = "requirements.yml"
     playbook_file = "main.yml"
-    extra_arguments = [ "--extra-vars", "ansible_connection=ssh", "ansible_port=22", "ansible_user='root'", "ansible_password='L4rry_Th3_C0w'" ]
+    extra_arguments = [ "--extra-vars", "ansible_connection=ssh ansible_port=22 ansible_user='root' ansible_password='L4rry_Th3_C0w'" ]
     ansible_env_vars = "ANSIBLE_HOST_KEY_CHECKING=False"
     use_proxy = false
   }
