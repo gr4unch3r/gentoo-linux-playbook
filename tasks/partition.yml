@@ -2,6 +2,7 @@
 - name: Detecting firmware type
   ansible.builtin.shell:
     cmd: ls /sys/firmware/efi/efivars
+  ignore_errors: true
   register: efivars_contents
 
 - name: Discarding device sectors
