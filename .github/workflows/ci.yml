@@ -10,8 +10,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
+      - name: Upgrade pip
+        run: python3 -m pip install --upgrade pip
+
       - name: Install Ansible
         run: python3 -m pip install ansible
+
+      - name: Install sshpass
+        run: brew install hudochenkov/sshpass/sshpass
 
       - name: Prevent MacOS crash
         run: export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
