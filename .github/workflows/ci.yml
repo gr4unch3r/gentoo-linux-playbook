@@ -22,7 +22,7 @@ jobs:
       - name: Prevent MacOS crash
         run: export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
 
-      - name: Debug Packer
+      - name: Debug
         run: export PACKER_LOG=1
 
       - name: Test playbook
