@@ -1,13 +1,16 @@
 ---
 - name: Detecting firmware type
-  ansible.builtin.shell:
-    cmd: ls /sys/firmware/efi/efivars
-  ignore_errors: true
-  register: efivars_contents
+  ansible.builtin.find:
+    paths: /sys/firmware
+    patterns: 'efivars'
+    recurse: yes
+    file_type: directory
+  register: efivars_result
 
 - name: Discarding device sectors
   ansible.builtin.shell:
     cmd: blkdiscard -f {{ sys_device }}
+  ignore_errors: true
 
 - name: Creating ESP if UEFI
   community.general.parted:
@@ -21,14 +24,14 @@
     flags: [boot]
     part_start: 1MiB
     part_end: 257MiB
-  when: efivars_contents.stdout != ""
+  when: efivars_result.path == "/sys/firmware/efi/efivars"
 
-- name: Creating fat32 filesystem on ESP and checking disk blocks
+- name: Creating fat32 filesystem on ESP
   community.general.filesystem:
     fstype: vfat
     dev: "{{ sys_device }}1"
     opts: -F 32
-  when: efivars_contents.stdout != ""
+  when: efivars_result.path == "/sys/firmware/efi/efivars"
 
 - name: Creating boot partition if BIOS
   community.general.parted:
@@ -42,13 +45,13 @@
     flags: [boot]
     part_start: 1MiB
     part_end: 257MiB
-  when: efivars_contents.stdout == ""
+  when: efivars_result.path != "/sys/firmware/efi/efivars"
 
-- name: Creating ext4 filesystem on boot partition and checking disk blocks
+- name: Creating ext4 filesystem on boot partition
   community.general.filesystem:
     fstype: ext4
     dev: "{{ sys_device }}1"
-  when: efivars_contents.stdout == ""
+  when: efivars_result.path != "/sys/firmware/efi/efivars"
 
 - name: Creating swap partition if UEFI
   community.general.parted:
@@ -62,7 +65,7 @@
     flags: [swap]
     part_start: 258MiB
     part_end: 4355MiB
-  when: efivars_contents.stdout != ""
+  when: efivars_result.path == "/sys/firmware/efi/efivars"
 
 - name: Creating swap partition if BIOS
   community.general.parted:
@@ -76,9 +79,9 @@
     flags: [swap]
     part_start: 258MiB
     part_end: 4355MiB
-  when: efivars_contents.stdout == ""
+  when: efivars_result.path != "/sys/firmware/efi/efivars"
 
-- name: Making swap and checking disk blocks
+- name: Making swap
   community.general.filesystem:
     fstype: swap
     dev: "{{ sys_device }}2"
@@ -98,7 +101,7 @@
     name: rootfs
     part_start: 4356MiB
     part_end: -1MiB
-  when: efivars_contents.stdout != ""
+  when: efivars_result.path == "/sys/firmware/efi/efivars"
 
 - name: Creating / partition if BIOS
   community.general.parted:
@@ -111,9 +114,9 @@
     name: rootfs
     part_start: 4356MiB
     part_end: -1MiB
-  when: efivars_contents.stdout == ""
+  when: efivars_result.path != "/sys/firmware/efi/efivars"
 
-- name: Creating ext4 filesystem on / partition and checking disk blocks
+- name: Creating ext4 filesystem on / partition
   community.general.filesystem:
     fstype: ext4
     dev: "{{ sys_device }}3"
