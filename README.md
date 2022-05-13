@@ -11,7 +11,7 @@ This playbook installs and configures [Gentoo Linux](https://www.gentoo.org/), f
 
 ## Overriding Defaults
 
-You can override any of the defaults configured in ```default.config.yml``` by creating a ```config.yml``` file and setting the overrides in that file.
+You can override any of the defaults configured in ```default.config.yml``` by setting the overrides in the ```config.yml``` file.
 
 ## Getting Started
 
