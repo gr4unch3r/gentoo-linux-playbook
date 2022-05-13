@@ -1,6 +1,6 @@
 # Gentoo Linux Ansible Playbook
 
-![GitHub Workflow Status](https://img.shields.io/github/workflow/status/gr4unch3r/gentoo-linux-playbook/packer-test?label=test&logo=github)
+[![CI](https://github.com/gr4unch3r/gentoo-linux-playbook/actions/workflows/ci.yml/badge.svg)](https://github.com/gr4unch3r/gentoo-linux-playbook/actions/workflows/ci.yml)
 
 This playbook installs and configures [Gentoo Linux](https://www.gentoo.org/), following the [Gentoo AMD64 Handbook](https://wiki.gentoo.org/wiki/Handbook:AMD64/Full/Installation).
 

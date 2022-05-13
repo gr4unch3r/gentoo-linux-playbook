@@ -1,5 +1,5 @@
 ---
-name: packer-test
+name: CI
 
 on: push
 
@@ -7,23 +7,17 @@ jobs:
   test:
     runs-on: macos-10.15
     steps:
-      - name: checkout
-        uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v3
 
-      - name: upgrade python
-        run: brew update && brew install python@3.10
-
-      - name: upgrade pip
-        run: python3 -m pip install --upgrade pip
-
-      - name: create virtualenv
-        run: python3 -m pip install virtualenv && python3 -m virtualenv --python=python3 venv && source ./venv/bin/activate
-
-      - name: install ansible
+      - name: Install Ansible
         run: python3 -m pip install ansible
 
-      - name: prevent MacOS crash
+      - name: Prevent MacOS crash
         run: export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
 
-      - name: test playbook
+      - name: Debug
+        run: export PACKER_LOG=1
+
+      - name: Test playbook
         run: packer build packer.pkr.hcl
