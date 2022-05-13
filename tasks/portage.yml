@@ -3,10 +3,6 @@
   ansible.builtin.shell:
     cmd: "{{ chroot_cmd }} '. /etc/profile; emerge-webrsync'"
 
-- name: Updating ebuild repo
-  ansible.builtin.shell:
-    cmd: "{{ chroot_cmd }} '. /etc/profile; emerge --sync'"
-
 - name: Setting profile
   ansible.builtin.shell:
     cmd: "{{ chroot_cmd }} '. /etc/profile; eselect profile set {{ portage_profile }}'"
