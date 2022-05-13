@@ -63,7 +63,6 @@
     fs_type: linux-swap
     label: gpt
     name: swap
-    flags: [swap]
     part_start: 258MiB
     part_end: 4355MiB
   when: efivars_result.stat.exists
@@ -74,9 +73,8 @@
     number: 2
     state: present
     align: optimal
-    fs_type: swap
+    fs_type: linux-swap
     label: msdos
-    flags: [swap]
     part_start: 258MiB
     part_end: 4355MiB
   when: not efivars_result.stat.exists
