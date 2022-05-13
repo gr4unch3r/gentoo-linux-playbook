@@ -1,10 +1,5 @@
 ---
-- name: Detecting firmware type
-  ansible.builtin.stat:
-    path: /sys/firmware/efi/efivars
-  register: efivars_result
-
-- name: Detect device type
+- name: Detecting device type
   ansible.builtin.shell:
     cmd: cat /sys/block/sda/queue/rotational
   register: device_type
@@ -13,6 +8,11 @@
   ansible.builtin.shell:
     cmd: blkdiscard -f {{ sys_device }}
   when: "'0' in device_type.stdout"
+
+- name: Detecting firmware type
+  ansible.builtin.stat:
+    path: /sys/firmware/efi/efivars
+  register: efivars_result
 
 - name: Creating ESP if UEFI
   community.general.parted:
@@ -74,7 +74,7 @@
     number: 2
     state: present
     align: optimal
-    fs_type: linux-swap
+    fs_type: swap
     label: msdos
     flags: [swap]
     part_start: 258MiB
