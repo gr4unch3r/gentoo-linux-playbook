@@ -6,9 +6,9 @@
 - name: Generating fstab for MBR
   ansible.builtin.shell:
     cmd: "{{ chroot_cmd }} '. /etc/profile; genfstab -t UUID / > /etc/fstab'"
-  when: efivars_contents.stdout == ""
+  when: not efivars_result.stat.exists
 
 - name: Generating fstab for GPT
   ansible.builtin.shell:
     cmd: "{{ chroot_cmd }} '. /etc/profile; genfstab -t PARTUUID / > /etc/fstab'"
-  when: efivars_contents.stdout != ""
+  when: efivars_result.stat.exists

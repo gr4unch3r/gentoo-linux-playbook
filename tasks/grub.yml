@@ -5,7 +5,7 @@
     line: GRUB_PLATFORMS="efi-64"
     state: present
     insertafter: EOF
-  when: efivars_contents.stdout != ""
+  when: efivars_result.stat.exists
 
 - name: Emerging Grub
   ansible.builtin.shell:
@@ -14,12 +14,12 @@
 - name: Installing Grub for BIOS
   ansible.builtin.shell:
     cmd: "{{ chroot_cmd }} '. /etc/profile; grub-install {{ sys_device }}'"
-  when: efivars_contents.stdout == ""
+  when: not efivars_result.stat.exists
 
 - name: Installing Grub for UEFI
   ansible.builtin.shell:
     cmd: "{{ chroot_cmd }} '. /etc/profile; grub-install --target=x86_64-efi --efi-directory=/boot --removable'"
-  when: efivars_contents.stdout != ""
+  when: efivars_result.stat.exists
 
 - name: Updating Grub
   ansible.builtin.shell:

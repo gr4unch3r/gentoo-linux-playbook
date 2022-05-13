@@ -1,8 +1,8 @@
 ---
 # user:password configuration
-root_password: "foo"
+root_password: "L4rry_Th3_C0w"
 nonroot_user: "user"
-nonroot_password: "bar"
+nonroot_password: "L4rry_Th3_C0w"
 
 # System info
 sys_device: "/dev/sda"

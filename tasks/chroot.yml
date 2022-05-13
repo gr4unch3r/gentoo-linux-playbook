@@ -61,7 +61,7 @@
     state: mounted
     dump: 0
     passno: 2
-  when: efivars_contents.stdout != ""
+  when: efivars_result.stat.exists
 
 - name: Mounting boot partition if BIOS
   ansible.posix.mount:
@@ -72,4 +72,4 @@
     state: mounted
     dump: 0
     passno: 2
-  when: efivars_contents.stdout == ""
+  when: not efivars_result.stat.exists
