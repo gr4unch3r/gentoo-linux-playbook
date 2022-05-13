@@ -23,7 +23,7 @@ build {
 
   provisioner "ansible" {
     user               = "root"
-    ansible_env_vars   = "ANSIBLE_HOST_KEY_CHECKING=false"
+    ansible_env_vars   = ["ANSIBLE_HOST_KEY_CHECKING=false"] 
     extra_arguments    = ["--extra-vars", "ansible_password='L4rry_Th3_C0w'"]
     collections_path   = "requirements.yml"
     playbook_file      = "main.yml"
