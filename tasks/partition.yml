@@ -1,10 +1,7 @@
 ---
 - name: Detecting firmware type
-  ansible.builtin.find:
-    paths: /sys/firmware
-    patterns: 'efivars'
-    recurse: yes
-    file_type: directory
+  ansible.builtin.stat:
+    path: /sys/firmware/efi/efivars
   register: efivars_result
 
 - name: Discarding device sectors
@@ -24,14 +21,14 @@
     flags: [boot]
     part_start: 1MiB
     part_end: 257MiB
-  when: efivars_result.path == "/sys/firmware/efi/efivars"
+  when: efivars_result.stat.exists
 
 - name: Creating fat32 filesystem on ESP
   community.general.filesystem:
     fstype: vfat
     dev: "{{ sys_device }}1"
     opts: -F 32
-  when: efivars_result.path == "/sys/firmware/efi/efivars"
+  when: efivars_result.stat.exists
 
 - name: Creating boot partition if BIOS
   community.general.parted:
@@ -45,13 +42,13 @@
     flags: [boot]
     part_start: 1MiB
     part_end: 257MiB
-  when: efivars_result.path != "/sys/firmware/efi/efivars"
+  when: not efivars_result.stat.exists
 
 - name: Creating ext4 filesystem on boot partition
   community.general.filesystem:
     fstype: ext4
     dev: "{{ sys_device }}1"
-  when: efivars_result.path != "/sys/firmware/efi/efivars"
+  when: not efivars_result.stat.exists
 
 - name: Creating swap partition if UEFI
   community.general.parted:
@@ -65,7 +62,7 @@
     flags: [swap]
     part_start: 258MiB
     part_end: 4355MiB
-  when: efivars_result.path == "/sys/firmware/efi/efivars"
+  when: efivars_result.stat.exists
 
 - name: Creating swap partition if BIOS
   community.general.parted:
@@ -79,7 +76,7 @@
     flags: [swap]
     part_start: 258MiB
     part_end: 4355MiB
-  when: efivars_result.path != "/sys/firmware/efi/efivars"
+  when: not efivars_result.stat.exists
 
 - name: Making swap
   community.general.filesystem:
@@ -101,7 +98,7 @@
     name: rootfs
     part_start: 4356MiB
     part_end: -1MiB
-  when: efivars_result.path == "/sys/firmware/efi/efivars"
+  when: efivars_result.stat.exists
 
 - name: Creating / partition if BIOS
   community.general.parted:
@@ -114,7 +111,7 @@
     name: rootfs
     part_start: 4356MiB
     part_end: -1MiB
-  when: efivars_result.path != "/sys/firmware/efi/efivars"
+  when: not efivars_result.stat.exists
 
 - name: Creating ext4 filesystem on / partition
   community.general.filesystem:
