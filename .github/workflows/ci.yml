@@ -14,7 +14,7 @@ jobs:
         run: sudo launchctl limit maxfiles unlimited
 
       - name: Install Ansible
-        run: python3 -m pip install ansible
+        run: brew install ansible
 
       - name: Install sshpass
         run: brew install esolitos/ipa/sshpass
