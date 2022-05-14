@@ -1,7 +1,6 @@
-
 source "virtualbox-iso" "gentoo-test" {
-  boot_wait            = "10s"
-  boot_command         = ["gentoo dosshd passwd=L4rry_Th3_C0w", "<enter>", "<wait30s>"]
+  boot_wait            = "5s"
+  boot_command         = ["gentoo dosshd passwd=L4rry_Th3_C0w", "<enter>", "<wait10s>", "<enter>", "<wait50s>"]
   firmware             = "bios"
   disk_size            = 40000
   guest_additions_mode = "disable"
@@ -9,7 +8,7 @@ source "virtualbox-iso" "gentoo-test" {
   headless             = true
   iso_checksum         = "file:https://distfiles.gentoo.org/releases/amd64/autobuilds/20220508T170538Z/install-amd64-minimal-20220508T170538Z.iso.DIGESTS"
   iso_url              = "https://distfiles.gentoo.org/releases/amd64/autobuilds/20220508T170538Z/install-amd64-minimal-20220508T170538Z.iso"
-  memory               = 12288
+  memory               = 10035
   cpus                 = 3
   shutdown_command     = "poweroff"
   ssh_username         = "root"
@@ -19,7 +18,7 @@ source "virtualbox-iso" "gentoo-test" {
   ssh_agent_auth       = false
   skip_export          = true
   vboxmanage           = [
-   ["modifyvm", "{{.Name}}", "--memory", "12288"],
+   ["modifyvm", "{{.Name}}", "--memory", "10035"],
    ["modifyvm", "{{.Name}}", "--cpus", "3"],
 ]
 }
