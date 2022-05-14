@@ -10,11 +10,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
+      - name: Fix any “Too many open files” errors
+        run: sudo launchctl limit maxfiles unlimited
+
       - name: Install Ansible
-        run: python3 -m pip install ansible
+        run: sudo python -m pip install ansible
 
       - name: Install sshpass
-        run: brew install esolitos/ipa/sshpass
+        run: sudo brew install esolitos/ipa/sshpass
 
       - name: Test playbook
         run: packer build packer.pkr.hcl
