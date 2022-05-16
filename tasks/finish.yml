@@ -37,5 +37,5 @@
   loop_control:
     label: "{{ chroot_mnt }}{{ item }}"
 
-- name: Rebooting machine
-  ansible.builtin.reboot:
+- name: Shutting down machine
+  community.general.shutdown:

@@ -76,3 +76,13 @@
     dump: 0
     passno: 2
   when: not efivars_result.stat.exists
+
+- name: Mounting Portage TMPDIR on tmpfs
+  ansible.posix.mount:
+    path: "{{ chroot_mnt }}var/tmp/portage"
+    src: tmpfs
+    opts: rw,uid=portage,gid=portage,mode=775,nosuid,noatime,nodev	
+    fstype: tmpfs
+    state: mounted
+    dump: 0
+    passno: 0

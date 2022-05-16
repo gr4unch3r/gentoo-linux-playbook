@@ -14,7 +14,6 @@ source "virtualbox-iso" "gentoo-test" {
   ssh_timeout               = "10m"
   ssh_port                  = 22
   ssh_agent_auth            = false
-  ssh_clear_authorized_keys = true
   skip_export               = true
   vboxmanage                = [
    ["modifyvm", "{{.Name}}", "--memory", "10035"],

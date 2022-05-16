@@ -29,7 +29,6 @@ jobs:
   build:
     name: jira-issue
     runs-on: ubuntu-latest
-    needs: test
     steps:
       - name: Jira login
         uses: atlassian/gajira-login@master
