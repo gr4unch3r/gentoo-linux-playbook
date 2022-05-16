@@ -27,12 +27,13 @@ jobs:
           PACKER_LOG: 1
 
   build:
-    name: jira-notify
+    name: jira-issue
     runs-on: ubuntu-latest
     needs: test
     steps:
       - name: Jira login
         uses: atlassian/gajira-login@master
+        if: ${{ always() }}
         env:
           JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
           JIRA_USER_EMAIL: ${{ secrets.JIRA_USER_EMAIL }}
@@ -40,9 +41,18 @@ jobs:
 
       - name: Create Jira issue if success
         uses: atlassian/gajira-create@master
-        if: success()
+        if: ${{ success() }}   
         with:
-          project: ARRT
+          project: GLP
           issuetype: Build
           summary: |
             Build completed for ${{ github.repository }}
+
+      - name: Create Jira issue if failed
+        uses: atlassian/gajira-create@master
+        if: ${{ failure() }}  
+        with:
+          project: GLP
+          issuetype: Build
+          summary: |
+            Build failed for ${{ github.repository }}
