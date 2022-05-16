@@ -1,7 +1,10 @@
 ---
-- name: Selecting 3 best mirrors
-  ansible.builtin.shell:
-    cmd:  mirrorselect -s3 -b10 -o >> {{ make_conf }}
+- name: Selecting mirror
+  ansible.builtin.lineinfile:
+    path: "{{ make_conf }}"
+    line: GENTOO_MIRRORS="https://gentoo.osuosl.org/"
+    state: present
+    insertafter: EOF
 
 - name: Creating Gentoo ebuild repo
   ansible.builtin.file:

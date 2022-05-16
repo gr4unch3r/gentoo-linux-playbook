@@ -40,5 +40,5 @@
     - name: Install Grub
       import_tasks: tasks/grub.yml
 
-    - name: Reboot system
-      import_tasks: tasks/reboot.yml
+    - name: Finish install
+      import_tasks: tasks/finish.yml
