@@ -5,6 +5,7 @@ on: push
 
 jobs:
   test:
+    name: test-playbook
     runs-on: macos-10.15
     steps:
       - name: Checkout
@@ -25,6 +26,11 @@ jobs:
           OBJC_DISABLE_INITIALIZE_FORK_SAFETY: YES
           PACKER_LOG: 1
 
+  build:
+    name: jira-notify
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
       - name: Jira login
         uses: atlassian/gajira-login@master
         env:
@@ -36,16 +42,7 @@ jobs:
         uses: atlassian/gajira-create@master
         if: success()
         with:
-          project: GLP
+          project: ARRT
           issuetype: Build
           summary: |
             Build completed for ${{ github.repository }}
-
-      - name: Create Jira issue if failed
-        uses: atlassian/gajira-create@master
-        if: failure()
-        with:
-          project: GLP
-          issuetype: Build
-          summary: |
-            Build failed for ${{ github.repository }}

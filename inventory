@@ -1,1 +1,5 @@
-livecd ansible_connection=ssh ansible_host_key_checking=false ansible_host=127.0.0.1 ansible_port=22 ansible_user='root' ansible_password='L4rry_Th3_C0w'
+livecd ansible_connection=ssh ansible_host=127.0.0.1 ansible_port=22 ansible_user='root' ansible_password='L4rry_Th3_C0w'
+
+[ssh_connection]
+ansible_ssh_pipelining=true
+ansible_host_key_checking=false
