@@ -1,7 +1,7 @@
 ---
 - name: Updating the system clock
   ansible.builtin.shell:
-    cmd: ntpd -b -u 0.gentoo.pool.ntp.org
+    cmd: ntpdate -b -u 0.gentoo.pool.ntp.org
 
 - name: Determining latest Stage 3 tarball
   ansible.builtin.uri:
