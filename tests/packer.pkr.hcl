@@ -1,7 +1,7 @@
 source "virtualbox-iso" "gentoo-test" {
   boot_wait                 = "5s"
-  boot_command              = "${var.boot_command}"
-  firmware                  = "${var.firmware}"
+  boot_command              = ["gentoo dosshd passwd=L4rry_Th3_C0w", "<enter>", "<wait10s>", "<enter>", "<wait50s>"]
+  firmware                  = "bios"
   disk_size                 = 40000
   guest_additions_mode      = "disable"
   guest_os_type             = "Gentoo_64"
@@ -26,11 +26,10 @@ build {
   sources = ["source.virtualbox-iso.gentoo-test"]
 
   provisioner "ansible" {
-    user                    = "root"
     ansible_env_vars        = ["ANSIBLE_HOST_KEY_CHECKING=false"] 
-    extra_arguments         = ["--extra-vars", "ansible_password='L4rry_Th3_C0w'"]
-    collections_path        = "requirements.yml"
-    playbook_file           = "main.yml"
+    collections_path        = "../requirements.yml"
+    inventory_file          = "../inventory"
+    playbook_file           = "../main.yml"
     use_proxy               = false
   }
 }
