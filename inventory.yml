@@ -1,9 +1,0 @@
----
-all:
-  hosts:
-    livecd:
-      ansible_connection: "ssh"
-      ansible_host: "192.168.0.0"
-      ansible_port: "22"
-      ansible_user: "root"
-      ansible_password: "L4rry_Th3_C0w"
