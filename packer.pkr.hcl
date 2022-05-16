@@ -26,8 +26,10 @@ build {
   sources = ["source.virtualbox-iso.gentoo-test"]
 
   provisioner "ansible" {
+    user                    = "root"
+    ansible_env_vars        = ["ANSIBLE_HOST_KEY_CHECKING=false"] 
+    extra_arguments         = ["--extra-vars", "ansible_password='L4rry_Th3_C0w'"]
     playbook_file           = "main.yml"
-    inventory_file          = "inventory"
     collections_path        = "requirements.yml"
     use_proxy               = false
   }
