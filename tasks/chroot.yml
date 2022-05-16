@@ -1,7 +1,7 @@
 ---
 - name: Selecting 3 best mirrors
   ansible.builtin.shell:
-    cmd: mirrorselect -s5 -o >> {{ make_conf }}
+    cmd:  mirrorselect -s3 -b10 -o >> {{ make_conf }}
 
 - name: Creating Gentoo ebuild repo
   ansible.builtin.file:
