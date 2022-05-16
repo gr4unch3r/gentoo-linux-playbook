@@ -8,7 +8,7 @@ source "virtualbox-iso" "gentoo-test" {
   headless                  = true
   iso_checksum              = "file:https://distfiles.gentoo.org/releases/amd64/autobuilds/20220508T170538Z/install-amd64-minimal-20220508T170538Z.iso.DIGESTS"
   iso_url                   = "https://distfiles.gentoo.org/releases/amd64/autobuilds/20220508T170538Z/install-amd64-minimal-20220508T170538Z.iso"
-  shutdown_command          = "poweroff"
+  disable_shutdown          = true
   ssh_username              = "root"
   ssh_password              = "L4rry_Th3_C0w"
   ssh_timeout               = "10m"
