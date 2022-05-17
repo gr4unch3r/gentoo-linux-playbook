@@ -1,4 +1,10 @@
 ---
+- name: Disabling password complexity requirements
+  ansible.builtin.lineinfile:
+    path: "{{ chroot_mnt }}etc/security/passwdqc.conf"
+    regexp: '^min='
+    line: min=1,1,1,1,1
+
 - name: Setting root password
   ansible.builtin.shell:
     cmd: "{{ chroot_cmd }} '. /etc/profile; echo 'root:{{ root_password }}' | chpasswd'"

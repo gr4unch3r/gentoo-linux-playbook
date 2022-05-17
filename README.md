@@ -18,7 +18,7 @@ You can override any of the defaults configured in ```default.config.yml``` by s
 Boot Gentoo install media on target machine with the following boot options:
 
 ```
-gentoo dosshd passwd=L4rry_Th3_C0w
+gentoo dosshd passwd=vagrant
 ```
 
 Then on Ansible controller:

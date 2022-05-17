@@ -2,7 +2,7 @@
 - name: Selecting mirror
   ansible.builtin.lineinfile:
     path: "{{ make_conf }}"
-    line: GENTOO_MIRRORS="https://gentoo.osuosl.org/"
+    line: GENTOO_MIRRORS="https://mirrors.kernel.org/gentoo/"
     state: present
     insertafter: EOF
 

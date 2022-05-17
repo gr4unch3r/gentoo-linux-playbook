@@ -1,8 +1,8 @@
 ---
 # user:password configuration
-root_password: "L4rry_Th3_C0w"
-nonroot_user: "user"
-nonroot_password: "L4rry_Th3_C0w"
+root_password: "vagrant"
+nonroot_user: "vagrant"
+nonroot_password: "vagrant"
 
 # System info
 sys_device: "/dev/sda"
@@ -12,10 +12,8 @@ sys_keyboard: "us"
 sys_locale: "en_US"
 
 # Stage 3 configuration
-gentoo_mirror: "https://distfiles.gentoo.org/releases/amd64/autobuilds/"
+gentoo_mirror: "https://mirrors.kernel.org/gentoo/releases/amd64/autobuilds/"
 gentoo_stage: "latest-stage3-amd64-openrc.txt"
-# For Hardened Gentoo
-# gentoo_stage: "latest-stage3-amd64-hardened-openrc.txt"
 key_server: "hkps://keys.gentoo.org"
 signing_key: "13EBBDBEDE7A12775DFDB1BABB572E0E2D182910"
 key_fingerprint: "13EB BDBE DE7A 1277 5DFD  B1BA BB57 2E0E 2D18 2910"
@@ -26,8 +24,6 @@ chroot_cmd: "chroot /mnt/gentoo sh -c"
 
 # Portage configuration
 portage_profile: "default/linux/amd64/17.1"
-# For Hardened Gentoo
-# portage_profile: "default/linux/amd64/17.1/hardened"
 make_conf: "{{ chroot_mnt }}/etc/portage/make.conf"
 
 # Installed packages
