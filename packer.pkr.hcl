@@ -1,6 +1,6 @@
 variable "cloud_token" {
-  type    = string
-  default = "${env("VAGRANT_CLOUD_TOKEN")}"
+  type                      = string
+  default                   = "${env("VAGRANT_CLOUD_TOKEN")}"
 }
 
 source "virtualbox-iso" "gentoo-test" {
@@ -45,8 +45,8 @@ build {
       vagrantfile_template  = "vagrantfile.tpl"
     }
     post-processor "checksum" {
-    checksum_types = ["sha512"]
-    output = "packer_{{.BuildName}}_{{.ChecksumType}}.checksum"
+      checksum_types        = ["sha512"]
+      output                = "packer_{{.BuildName}}_{{.ChecksumType}}.checksum"
     }
     post-processor "vagrant-cloud" {
       access_token          = "${var.cloud_token}"
@@ -54,6 +54,7 @@ build {
       box_checksum          = "sha512:{$checksum}"
       keep_input_artifact   = false
       version               = "0.1.0"
+      version_description   = "**Source:** [https://github.com/gr4unch3r/gentoo-linux-playbook](https://github.com/gr4unch3r/gentoo-linux-playbook)"
     }
   }
 }
