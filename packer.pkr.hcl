@@ -6,7 +6,7 @@ variable "cloud_token" {
 source "virtualbox-iso" "gentoo-test" {
   vm_name                   = "gentoo-test"
   boot_wait                 = "5s"
-  boot_command              = ["gentoo dosshd passwd=vagrant", "<enter>", "<wait10s>", "<enter>", "<wait50s>"]
+  boot_command              = ["gentoo dosshd passwd=L4rry_Th3_C0w", "<enter>", "<wait10s>", "<enter>", "<wait50s>"]
   firmware                  = "bios"
   disk_size                 = 40000
   guest_additions_mode      = "disable"
@@ -16,7 +16,7 @@ source "virtualbox-iso" "gentoo-test" {
   iso_url                   = "https://mirrors.kernel.org/gentoo/releases/amd64/autobuilds/20220508T170538Z/install-amd64-minimal-20220508T170538Z.iso"
   disable_shutdown          = true
   ssh_username              = "root"
-  ssh_password              = "vagrant"
+  ssh_password              = "L4rry_Th3_C0w"
   ssh_timeout               = "10m"
   ssh_port                  = 22
   ssh_agent_auth            = false
@@ -32,7 +32,7 @@ build {
   provisioner "ansible" {
     user                    = "root"
     ansible_env_vars        = ["ANSIBLE_HOST_KEY_CHECKING=false"] 
-    extra_arguments         = ["--extra-vars", "ansible_password='vagrant'"]
+    extra_arguments         = ["--extra-vars", "ansible_password='L4rry_Th3_C0w'"]
     playbook_file           = "main.yml"
     collections_path        = "requirements.yml"
     use_proxy               = false
