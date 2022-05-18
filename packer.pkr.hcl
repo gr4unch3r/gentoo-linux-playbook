@@ -39,12 +39,12 @@ build {
   }
 
   post-processors {
-    post-processor "checksum" {
-      checksum_types        = ["sha512"]
-    }
     post-processor "vagrant" {
       output                = "gentoo-test-{{.Provider}}.box"
       vagrantfile_template  = "vagrantfile.tpl"
+    }
+    post-processor "checksum" {
+      checksum_types        = ["sha512"]
     }
     post-processor "vagrant-cloud" {
       access_token          = "${var.cloud_token}"
