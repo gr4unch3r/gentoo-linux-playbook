@@ -39,8 +39,10 @@ build {
   }
 
   post-processors {
+    post-processor "checksum" {
+      checksum_types        = ["sha512"]
+    }
     post-processor "vagrant" {
-      keep_input_artifact   = false
       output                = "gentoo-test-{{.Provider}}.box"
       vagrantfile_template  = "vagrantfile.tpl"
     }
@@ -48,6 +50,7 @@ build {
       access_token          = "${var.cloud_token}"
       box_tag               = "gr4unch3r/gentoo-test"
       keep_input_artifact   = false
+      box_checksum          = "sha512:{$checksum}"
       version               = "0.1.0"
       version_description   = "**Source:** [https://github.com/gr4unch3r/gentoo-linux-playbook](https://github.com/gr4unch3r/gentoo-linux-playbook)"
     }
