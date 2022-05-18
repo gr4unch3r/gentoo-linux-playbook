@@ -44,10 +44,6 @@ build {
       output                = "gentoo-test-{{.Provider}}.box"
       vagrantfile_template  = "vagrantfile.tpl"
     }
-    post-processor "checksum" {
-      checksum_types        = ["sha512"]
-      output                = "packer_{{.BuildName}}_{{.ChecksumType}}.checksum"
-    }
     post-processor "vagrant-cloud" {
       access_token          = "${var.cloud_token}"
       box_tag               = "gr4unch3r/gentoo-test"
