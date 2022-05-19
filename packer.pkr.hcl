@@ -45,7 +45,7 @@ build {
       keep_input_artifact   = true
     }
     post-processor "artifice" {
-      files = ["gentoo-test-{{.Provider}}.box"]
+      files                 = ["gentoo-test-{{.Provider}}.box"]
       keep_input_artifact   = true
     }
     post-processor "checksum" {
