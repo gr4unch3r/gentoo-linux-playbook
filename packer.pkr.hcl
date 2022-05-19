@@ -17,7 +17,7 @@ source "virtualbox-iso" "gentoo-test" {
   ssh_agent_auth            = false
   vboxmanage                = [
    ["modifyvm", "{{.Name}}", "--memory", "10035"],
-   ["modifyvm", "{{.Name}}", "--cpus", "3"],
+   ["modifyvm", "{{.Name}}", "--cpus", "3"]
   ]
 }
 
