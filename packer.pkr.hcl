@@ -44,9 +44,6 @@ build {
       vagrantfile_template  = "vagrantfile.tpl"
       keep_input_artifact   = true
     }
-    post-processor "checksum" {
-      checksum_types        = ["sha512"]
-    }
     post-processor "vagrant-cloud" {
       access_token          = "${var.cloud_token}"
       box_tag               = "gr4unch3r/gentoo-test"
