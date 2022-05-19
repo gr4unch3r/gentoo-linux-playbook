@@ -49,7 +49,7 @@ build {
       keep_input_artifact   = true
     }
     post-processor "checksum" {
-      checksum_types = ["sha512"]
+      checksum_types        = ["sha512"]
     }
     post-processor "vagrant-cloud" {
       access_token          = "${var.cloud_token}"
