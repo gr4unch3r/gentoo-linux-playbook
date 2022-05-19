@@ -42,6 +42,7 @@ build {
     post-processor "vagrant" {
       output                = "gentoo-test-{{.Provider}}.box"
       vagrantfile_template  = "vagrantfile.tpl"
+      keep_input_artifact   = true
     }
     post-processor "checksum" {
       checksum_types        = ["sha512"]
