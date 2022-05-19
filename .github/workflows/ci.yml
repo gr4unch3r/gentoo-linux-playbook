@@ -29,7 +29,6 @@ jobs:
         env:
           OBJC_DISABLE_INITIALIZE_FORK_SAFETY: YES
           PACKER_LOG: 1
-          VAGRANT_CLOUD_TOKEN: ${{ secrets.VAGRANT_CLOUD_TOKEN }}
 
   build:
     name: jira-issue

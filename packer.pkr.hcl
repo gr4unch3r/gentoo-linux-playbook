@@ -1,14 +1,9 @@
-variable "cloud_token" {
-  type                      = string
-  default                   = "${env("VAGRANT_CLOUD_TOKEN")}"
-}
-
 source "virtualbox-iso" "gentoo-test" {
   vm_name                   = "gentoo-test"
   boot_wait                 = "5s"
   boot_command              = ["gentoo dosshd passwd=L4rry_Th3_C0w", "<enter>", "<wait10s>", "<enter>", "<wait50s>"]
   firmware                  = "bios"
-  disk_size                 = 40000
+  disk_size                 = "40000"
   guest_additions_mode      = "disable"
   guest_os_type             = "Gentoo_64"
   headless                  = true
@@ -18,17 +13,16 @@ source "virtualbox-iso" "gentoo-test" {
   ssh_username              = "root"
   ssh_password              = "L4rry_Th3_C0w"
   ssh_timeout               = "10m"
-  ssh_port                  = 22
+  ssh_port                  = "22"
   ssh_agent_auth            = false
   vboxmanage                = [
    ["modifyvm", "{{.Name}}", "--memory", "10035"],
    ["modifyvm", "{{.Name}}", "--cpus", "3"],
-]
+  ]
 }
 
 build {
-  sources = ["source.virtualbox-iso.gentoo-test"]
-
+  sources                   = ["source.virtualbox-iso.gentoo-test"]
   provisioner "ansible" {
     user                    = "root"
     ansible_env_vars        = ["ANSIBLE_HOST_KEY_CHECKING=false"] 
@@ -37,20 +31,10 @@ build {
     collections_path        = "requirements.yml"
     use_proxy               = false
   }
-
-  post-processors {
-    post-processor "vagrant" {
-      output                = "gentoo-test-{{.Provider}}.box"
-      vagrantfile_template  = "vagrantfile.tpl"
-      keep_input_artifact   = false
-    }
-    post-processor "vagrant-cloud" {
-      access_token          = "${var.cloud_token}"
-      box_tag               = "gr4unch3r/gentoo-test"
-      keep_input_artifact   = false
-      box_checksum          = ""
-      version               = "0.1.0"
-      version_description   = "**Source:** [https://github.com/gr4unch3r/gentoo-linux-playbook](https://github.com/gr4unch3r/gentoo-linux-playbook)"
-    }
+  post-processor "vagrant" {
+    output                  = "gentoo-test-{{.Provider}}.box"
+    vagrantfile_template    = "vagrantfile.tpl"
+    compression_level       = "9"
+    keep_input_artifact     = false
   }
 }

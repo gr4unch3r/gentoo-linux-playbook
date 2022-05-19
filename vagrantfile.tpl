@@ -10,11 +10,8 @@ ENV["VAGRANT_OLD_ENV_OBJC_DISABLE_INITIALIZE_FORK_SAFETY"] = "YES"
 
 Vagrant.configure("2") do |config|
     config.vm.box = "gentoo-test"
-    config.vm.communicator = "ssh"
-    config.ssh.insert_key = true
     config.vm.provider :virtualbox do |v|
       v.gui = false
-      v.check_guest_additions = false
       v.memory = 4096
       v.cpus = 2
     end
