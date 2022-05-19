@@ -44,11 +44,18 @@ build {
       vagrantfile_template  = "vagrantfile.tpl"
       keep_input_artifact   = true
     }
+    post-processor "artifice" {
+      files = ["gentoo-test-{{.Provider}}.box"]
+      keep_input_artifact   = true
+    }
+    post-processor "checksum" {
+      checksum_types = ["sha512"]
+    }
     post-processor "vagrant-cloud" {
       access_token          = "${var.cloud_token}"
       box_tag               = "gr4unch3r/gentoo-test"
       keep_input_artifact   = false
-      box_checksum          = "sha512:fccbbbeab3931fcd0f8cd81f93ddb5432f632e2e4bece82c15d74dec3697c4f136a641c0ce30592230b7f5778462cf1bf9d29e648a3f6838c76c0d63cd154d65"
+      box_checksum          = "sha512:{$checksum}"
       version               = "0.1.0"
       version_description   = "**Source:** [https://github.com/gr4unch3r/gentoo-linux-playbook](https://github.com/gr4unch3r/gentoo-linux-playbook)"
     }
