@@ -7,8 +7,8 @@ source "virtualbox-iso" "gentoo-test" {
   guest_additions_mode      = "disable"
   guest_os_type             = "Gentoo_64"
   headless                  = true
-  iso_checksum              = "file:https://mirrors.kernel.org/gentoo/releases/amd64/autobuilds/20220508T170538Z/install-amd64-minimal-20220508T170538Z.iso.DIGESTS"
-  iso_url                   = "https://mirrors.kernel.org/gentoo/releases/amd64/autobuilds/20220508T170538Z/install-amd64-minimal-20220508T170538Z.iso"
+  iso_checksum              = "file:https://mirrors.kernel.org/gentoo/releases/amd64/autobuilds/20220515T170533Z/install-amd64-minimal-20220515T170533Z.iso.DIGESTS"
+  iso_url                   = "https://mirrors.kernel.org/gentoo/releases/amd64/autobuilds/20220515T170533Z/install-amd64-minimal-20220515T170533Z.iso"
   disable_shutdown          = true
   ssh_username              = "root"
   ssh_password              = "L4rry_Th3_C0w"
